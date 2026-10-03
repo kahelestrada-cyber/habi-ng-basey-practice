@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { TrackCodeInput } from "@/components/TrackCodeInput";
 import { PATTERNS } from "@/types";
 
 export function HomePage() {
@@ -28,6 +29,23 @@ export function HomePage() {
             <Link to="/track">Track my order</Link>
           </Button>
         </div>
+      </section>
+
+      <section aria-labelledby="track-heading">
+        <Card className="max-w-xl">
+          <CardContent className="space-y-3">
+            <h2
+              id="track-heading"
+              className="font-heading text-xl font-semibold"
+            >
+              Already ordered?
+            </h2>
+            <TrackCodeInput
+              id="home-track-code"
+              label="Enter your order code"
+            />
+          </CardContent>
+        </Card>
       </section>
 
       <section aria-labelledby="patterns-heading" className="space-y-4">

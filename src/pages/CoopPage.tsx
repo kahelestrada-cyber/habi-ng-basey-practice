@@ -1,5 +1,6 @@
 import { LogOut } from "lucide-react";
 import { toast } from "sonner";
+import { AdvanceStatusDialog } from "@/components/AdvanceStatusDialog";
 import { CoopBoard } from "@/components/CoopBoard";
 import { LoginForm } from "@/components/LoginForm";
 import { Button } from "@/components/ui/button";
@@ -52,7 +53,11 @@ export function CoopPage() {
       {loading ? (
         <Skeleton className="mx-auto h-72 max-w-md rounded-xl" />
       ) : session ? (
-        <CoopBoard />
+        <CoopBoard
+          renderAction={(order, onChanged) => (
+            <AdvanceStatusDialog order={order} onChanged={onChanged} />
+          )}
+        />
       ) : (
         <LoginForm />
       )}
