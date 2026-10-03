@@ -1,0 +1,6 @@
+# --- vibe kit: append these lines to .gitignore ---
+.env*
+!.env.example
+.claude/.cache/
+.claude/event-start
+.claude/settings.local.json
