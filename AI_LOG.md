@@ -1,7 +1,7 @@
 # AI_LOG — how AI built this app
 > Feeds the poster and the "Effective use of AI" score (20%). One row per meaningful AI action. `/ailog <tool> - <what>` adds a row.
 
-**Project:** <app name> · **Event:** rSCENE 2026 AI Vibe Coding Challenge · **Live URL:** <url> · **Repo:** <url>
+**Project:** Habi ng Basey · **Event:** rSCENE 2026 AI Vibe Coding Challenge · **Live URL:** https://habi-ng-basey-practice.vercel.app · **Repo:** https://github.com/kahelestrada-cyber/habi-ng-basey-practice
 
 ## Tool roster (fill before the event)
 | Tool | Role | Why this tool |
@@ -21,6 +21,8 @@
 |---|---|---|---|---|
 | 00:10 | Spec | Claude Code (/spec) | Drafted + critiqued SPEC.md | Habi ng Basey (replaces Pamana): banig order → coop board → status + code tracking; no in-app AI (practice rule); cut RPC for a public view, merged colors into notes |
 | 00:24 | Scaffold | Claude Code (/scaffold) + Context7 + ui-ux-pro-max | Project setup, design system, schema, routes | Vite+TS+Tailwind v4+shadcn (14 components) shell builds clean; design-system/habi-ng-basey/MASTER.md generated (brief overrode its orange/Amatic SC with magenta/Inter+Fraunces); supabase/schema.sql with RLS + get_order() + 12 seed orders; 4 routes + 404; worked around npm 11 allow-scripts guard for shadcn CLI |
+| 01:33 | Deploy | Claude Code (/deploy) + Vercel Git integration | Deployed https://habi-ng-basey-practice.vercel.app (auto-deploy on push to main) | Shell live: / returns 200, deep route /track/HB-K7P2 returns 200 (SPA rewrite works), title correct |
+| 01:36 | Build | Claude Code (/feature) + Playwright MCP | F1 Place Order: RHF + Zod form (size/pattern chips, quantity, name, PH mobile, needed-by, notes), anon insert to Supabase with client-generated HB-XXXX code and retry on collision, confirmation screen with copy + track link | Playwright at 375px and 1280px: 5 validation errors shown on empty submit, bad mobile rejected, real inserts returned codes in 1.4 s and 0.3 s, track link opens /track/HB-XXXX, console clean, no horizontal overflow |
 
 ## AI inside the app
 - Feature: <what> · Model/API: <which> · Fallback: <what happens offline>
