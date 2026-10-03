@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Trailer encoder</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        background: #1c1917;
+        color: #fff;
+        margin: 16px;
+      }
+      canvas {
+        display: block;
+        width: 640px;
+        height: 360px;
+        background: #000;
+        margin: 12px 0;
+      }
+      button {
+        font-size: 18px;
+        padding: 10px 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Receives captured frames, then plays them onto a canvas with the music track and records both
+         with MediaRecorder. No ffmpeg needed. -->
+    <button id="go">Encode</button>
+    <span id="status">waiting for frames</span>
+    <canvas id="c" width="1280" height="720"></canvas>
+    <script>
+      const frames = [];
+      const status = document.getElementById("status");
+      window.frameCount = () => frames.length;
+      window.addFrame = async (b64, ts) => {
+        const blob = await (
+          await fetch("data:image/jpeg;base64," + b64)
+        ).blob();
+        frames.push({ ts, blob });
+        return frames.length;
+      };
+
+      async function encode(duration) {
+        frames.sort((a, b) => a.ts - b.ts);
+        const canvas = document.getElementById("c");
+        const g = canvas.getContext("2d");
+
+        const actx = new AudioContext();
+        const audioBuf = await actx.decodeAudioData(
+          await (await fetch("music.wav")).arrayBuffer(),
+        );
+        const dest = actx.createMediaStreamDestination();
+        const src = actx.createBufferSource();
+        src.buffer = audioBuf;
+        src.connect(dest);
+
+        const stream = new MediaStream([
+          ...canvas.captureStream(30).getVideoTracks(),
+          ...dest.stream.getAudioTracks(),
+        ]);
+        const mime = MediaRecorder.isTypeSupported("video/webm;codecs=vp9,opus")
+          ? "video/webm;codecs=vp9,opus"
+          : "video/webm";
+        const rec = new MediaRecorder(stream, {
+          mimeType: mime,
+          videoBitsPerSecond: 6000000,
+          audioBitsPerSecond: 160000,
+        });
+        const chunks = [];
+        rec.ondataavailable = (e) => e.data.size && chunks.push(e.data);
+
+        // decode a little ahead of playback so drawing never waits
+        const cache = new Map();
+        const AHEAD = 24;
+        let decodeUpTo = -1;
+        const ensure = (idx) => {
+          const end = Math.min(frames.length - 1, idx + AHEAD);
+          for (let i = decodeUpTo + 1; i <= end; i++) {
+            createImageBitmap(frames[i].blob).then((bm) => cache.set(i, bm));
+          }
+          decodeUpTo = Math.max(decodeUpTo, end);
+        };
+        ensure(0);
+        await new Promise((r) => setTimeout(r, 600));
+        g.drawImage(cache.get(0), 0, 0, 1280, 720);
+
+        let idx = 0,
+          drawn = -1,
+          dropped = 0;
+        rec.start(1000);
+        src.start();
+        const t0 = performance.now();
+        await new Promise((resolve) => {
+          const loop = () => {
+            const t = (performance.now() - t0) / 1000;
+            while (idx + 1 < frames.length && frames[idx + 1].ts <= t) idx++;
+            ensure(idx);
+            if (idx !== drawn) {
+              const bm = cache.get(idx);
+              if (bm) {
+                g.drawImage(bm, 0, 0, 1280, 720);
+                for (const k of cache.keys())
+                  if (k < idx) {
+                    cache.get(k).close();
+                    cache.delete(k);
+                  }
+                drawn = idx;
+              } else dropped++;
+            }
+            status.textContent = `encoding ${t.toFixed(1)} / ${duration}s · frame ${idx}/${frames.length}`;
+            if (t >= duration) resolve();
+            else requestAnimationFrame(loop);
+          };
+          requestAnimationFrame(loop);
+        });
+        src.stop();
+        await new Promise((r) => {
+          rec.onstop = r;
+          rec.stop();
+        });
+        const blob = new Blob(chunks, { type: "video/webm" });
+        window.__result = {
+          bytes: blob.size,
+          frames: frames.length,
+          dropped,
+          mime,
+        };
+        status.textContent = "done " + blob.size;
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "habi-ng-basey-trailer.webm";
+        document.body.appendChild(a);
+        a.click();
+      }
+      document
+        .getElementById("go")
+        .addEventListener("click", () => encode(window.__duration || 90));
+    </script>
+  </body>
+</html>

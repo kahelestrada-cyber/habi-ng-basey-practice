@@ -31,6 +31,7 @@
 | 02:17 | Polish | ui-reviewer subagent + Playwright MCP + ui-ux-pro-max skill | 8 UX fixes: distinct CSS swatch per pattern and all 6 shown, 2-column desktop hero with track card, How it works strip, quantity wording (20 pcs), lighter placeholders, 44px 404 buttons + track link, login copy + track link, pointer cursor + per-page titles | Reviewer score 7/10 before; fixes verified in browser at 375px (no overflow, console clean). Tracking load measured at about 2 s, not the 5-10 s the reviewer saw |
 | 02:26 | Poster | Claude Code (/poster) + Playwright MCP | Poster generated | poster/poster.html, poster/poster.png (A2, 1587x2245), QR to live URL, 7 screenshots in docs/screens/ |
 | 02:26 | Demo | Claude Code (/demo) | Demo script + Q&A | Live walk passed: landing, order form + price estimate, tracking HB-K7P2, coop login, deep-route refresh, 404; console clean |
+| 02:36 | Video | Claude Code + Playwright MCP (CDP screencast) + Python (numpy synth) | 90 s showcase trailer: animated HTML scenes driving the real app in a phone frame, original synthesized music, encoded in-browser with MediaRecorder (no ffmpeg on the machine) | video/habi-ng-basey-trailer.webm, 1280x720 VP9 + Opus, 4,420 captured frames, 0 dropped; duration header patched so players can seek |
 
 ## AI inside the app
 - None. Practice rule set by the human: no in-app AI feature for this build.

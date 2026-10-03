@@ -30,3 +30,9 @@ dist-ssr
 .claude/event-start
 .claude/settings.local.json
 .playwright-mcp/
+
+# trailer build outputs
+video/raw/
+video/*.wav
+video/*.webm
+video/*.mp4
