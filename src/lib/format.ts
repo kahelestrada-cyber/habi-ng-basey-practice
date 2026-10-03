@@ -1,4 +1,4 @@
-import { todayISO } from "@/lib/orders";
+import { todayISO } from "@/lib/date";
 import { PATTERNS, SIZES, type OrderStatus } from "@/types";
 
 /** "2026-10-20" → "Oct 20, 2026" (parsed as a local date, not UTC). */

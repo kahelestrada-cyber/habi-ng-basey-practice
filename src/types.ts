@@ -28,6 +28,14 @@ export const SIZES = [
 ] as const;
 export type BanigSize = (typeof SIZES)[number]["value"];
 
+/** Sample price guide in PHP per piece. Demo values; the coop confirms the final price. */
+export const SIZE_PRICE_PHP: Record<BanigSize, number> = {
+  "2x3": 250,
+  "3x5": 600,
+  "4x6": 1100,
+  "5x7": 1800,
+};
+
 export const PATTERNS = [
   { value: "bulaklak", label: "Bulaklak", hint: "Floral" },
   { value: "diamond", label: "Diamond", hint: "Classic lattice" },

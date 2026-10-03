@@ -4,7 +4,7 @@ import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { normalizeCode } from "@/lib/track";
+import { normalizeCode } from "@/lib/code";
 
 interface TrackCodeInputProps {
   /** Unique id prefix so the input can appear on more than one page. */

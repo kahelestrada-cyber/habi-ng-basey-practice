@@ -31,7 +31,7 @@ Auth: Supabase Auth, one officer email + password account created in the dashboa
 Accent `--primary` Basey banig magenta `#9D174D` · Inter (UI) + Fraunces (headings) · warm civic-tech, cream neutrals, card-based, generous whitespace · heritage touch: woven tricolor stripe (magenta / green / yellow) as header band via CSS gradients; order stepper drawn as a thread with knots per status. Generate MASTER.md with ui-ux-pro-max at scaffold and map onto `src/index.css`
 
 ## Stretch (only after F1–F3 are live)
-- [ ] S1 Price estimate shown on the form (size × quantity table)
+- [x] S1 Price estimate shown on the form (size × quantity table)
 - [ ] S2 Officer uploads a photo of the finished banig at Ready (Supabase Storage), shown on track page
 - [ ] S3 SMS "Ready for pickup" via Semaphore when status → Ready
 

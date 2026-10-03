@@ -1,8 +1,9 @@
-import type { ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { ChipGroup, FieldError, chipClass } from "@/components/FormBits";
+import { PriceEstimate } from "@/components/PriceEstimate";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,52 +21,10 @@ interface OrderFormProps {
   onPlaced: (order: PlacedOrder) => void;
 }
 
-function FieldError({ id, message }: { id: string; message?: string }) {
-  if (!message) return null;
-  return (
-    <p id={id} role="alert" className="text-sm font-medium text-destructive">
-      {message}
-    </p>
-  );
-}
-
-function ChipGroup({
-  legend,
-  error,
-  errorId,
-  wide,
-  children,
-}: {
-  legend: string;
-  error?: string;
-  errorId: string;
-  wide?: boolean;
-  children: ReactNode;
-}) {
-  return (
-    <fieldset
-      className="space-y-2"
-      aria-describedby={error ? errorId : undefined}
-    >
-      <legend className="mb-2 text-sm font-medium">{legend}</legend>
-      <div
-        className={`grid grid-cols-2 gap-2 ${wide ? "sm:grid-cols-4" : "sm:grid-cols-3"}`}
-      >
-        {children}
-      </div>
-      <FieldError id={errorId} message={error} />
-    </fieldset>
-  );
-}
-
-const chipClass =
-  "flex min-h-14 cursor-pointer flex-col justify-center rounded-lg border bg-card px-3 py-2 text-sm transition-colors " +
-  "hover:border-primary/60 peer-checked:border-primary peer-checked:bg-secondary peer-checked:text-secondary-foreground " +
-  "peer-focus-visible:ring-2 peer-focus-visible:ring-ring peer-focus-visible:ring-offset-2";
-
 export function OrderForm({ onPlaced }: OrderFormProps) {
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<OrderFormValues>({
@@ -146,7 +105,7 @@ export function OrderForm({ onPlaced }: OrderFormProps) {
             inputMode="numeric"
             min={1}
             max={500}
-            className="h-11"
+            className="h-11 placeholder:text-muted-foreground/60"
             aria-invalid={Boolean(errors.quantity)}
             aria-describedby={errors.quantity ? "quantity-error" : undefined}
             {...register("quantity", { valueAsNumber: true })}
@@ -159,7 +118,7 @@ export function OrderForm({ onPlaced }: OrderFormProps) {
             id="needed_by"
             type="date"
             min={todayISO()}
-            className="h-11"
+            className="h-11 placeholder:text-muted-foreground/60"
             aria-invalid={Boolean(errors.needed_by)}
             aria-describedby={errors.needed_by ? "needed_by-error" : undefined}
             {...register("needed_by")}
@@ -178,7 +137,7 @@ export function OrderForm({ onPlaced }: OrderFormProps) {
             id="buyer_name"
             autoComplete="name"
             placeholder="Juana Dela Cruz"
-            className="h-11"
+            className="h-11 placeholder:text-muted-foreground/60"
             aria-invalid={Boolean(errors.buyer_name)}
             aria-describedby={
               errors.buyer_name ? "buyer_name-error" : undefined
@@ -198,7 +157,7 @@ export function OrderForm({ onPlaced }: OrderFormProps) {
             inputMode="tel"
             autoComplete="tel"
             placeholder="09171234567"
-            className="h-11"
+            className="h-11 placeholder:text-muted-foreground/60"
             aria-invalid={Boolean(errors.contact)}
             aria-describedby={errors.contact ? "contact-error" : "contact-hint"}
             {...register("contact")}
@@ -221,6 +180,7 @@ export function OrderForm({ onPlaced }: OrderFormProps) {
         <Textarea
           id="notes"
           rows={3}
+          className="placeholder:text-muted-foreground/60"
           placeholder="Colors you like, a name to weave in, pickup details…"
           aria-invalid={Boolean(errors.notes)}
           aria-describedby={errors.notes ? "notes-error" : undefined}
@@ -228,6 +188,8 @@ export function OrderForm({ onPlaced }: OrderFormProps) {
         />
         <FieldError id="notes-error" message={errors.notes?.message} />
       </div>
+
+      <PriceEstimate control={control} />
 
       <Button
         type="submit"

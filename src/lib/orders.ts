@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { todayISO } from "@/lib/date";
 import { supabase, supabaseConfigured } from "@/lib/supabase";
 import type { BanigPattern, BanigSize } from "@/types";
 
@@ -16,13 +17,6 @@ const PATTERN_VALUES = [
   "church",
   "lettering",
 ] as const satisfies readonly BanigPattern[];
-
-/** Local date as YYYY-MM-DD (date inputs use local time, not UTC). */
-export function todayISO(): string {
-  const d = new Date();
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-}
 
 export const orderSchema = z.object({
   size: z.enum(SIZE_VALUES, { error: "Choose a size" }),
@@ -95,3 +89,5 @@ export async function placeOrder(
   }
   throw new Error("Could not generate an order code. Please try again.");
 }
+
+export { todayISO };

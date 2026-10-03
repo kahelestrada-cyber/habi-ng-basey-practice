@@ -9,7 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatDate, patternLabel, sizeLabel } from "@/lib/format";
-import { fetchTrackedOrder, normalizeCode } from "@/lib/track";
+import { normalizeCode } from "@/lib/code";
+import { fetchTrackedOrder } from "@/lib/track";
 import { cn } from "@/lib/utils";
 import type { OrderStatus, TrackedOrder } from "@/types";
 
@@ -154,7 +155,8 @@ function TrackedOrderView({ code }: { code: string }) {
             <div>
               <dt className="text-muted-foreground">Banig</dt>
               <dd className="font-medium">
-                {order.quantity} × {sizeLabel(order.size)}
+                {order.quantity} {order.quantity === 1 ? "pc" : "pcs"} ·{" "}
+                {sizeLabel(order.size)}
               </dd>
             </div>
             <div>

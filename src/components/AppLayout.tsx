@@ -1,5 +1,7 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { Suspense, useEffect } from "react";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { ClipboardList, Home, Search, ShieldCheck } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
 
@@ -10,7 +12,33 @@ const NAV = [
   { to: "/coop", label: "Coop", icon: ShieldCheck },
 ];
 
+const TITLES: Record<string, string> = {
+  "": "Habi ng Basey · Order a handwoven banig",
+  order: "Order a banig · Habi ng Basey",
+  track: "Track your order · Habi ng Basey",
+  coop: "Coop board · Habi ng Basey",
+};
+
+function PageFallback() {
+  return (
+    <div
+      className="mx-auto max-w-xl space-y-4"
+      aria-busy="true"
+      aria-label="Loading page"
+    >
+      <Skeleton className="h-9 w-2/3" />
+      <Skeleton className="h-5 w-full" />
+      <Skeleton className="h-64 rounded-xl" />
+    </div>
+  );
+}
+
 export function AppLayout() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    document.title = TITLES[pathname.split("/")[1] ?? ""] ?? "Habi ng Basey";
+  }, [pathname]);
+
   return (
     <div className="flex min-h-dvh flex-col bg-background text-foreground">
       <div className="banig-band h-2 w-full" aria-hidden="true" />
@@ -49,7 +77,9 @@ export function AppLayout() {
       </header>
 
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-24 pt-6 sm:pb-10">
-        <Outlet />
+        <Suspense fallback={<PageFallback />}>
+          <Outlet />
+        </Suspense>
       </main>
 
       <footer className="hidden border-t py-6 text-center text-xs text-muted-foreground sm:block">

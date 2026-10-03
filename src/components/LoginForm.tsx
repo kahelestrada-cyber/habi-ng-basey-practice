@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Link } from "react-router-dom";
 import { Loader2, LogIn } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -49,9 +50,7 @@ export function LoginForm() {
     <Card className="mx-auto max-w-md">
       <CardHeader>
         <CardTitle>Officer sign-in</CardTitle>
-        <CardDescription>
-          Only the coop's order officer can see and update orders.
-        </CardDescription>
+        <CardDescription>Officers only.</CardDescription>
       </CardHeader>
       <CardContent>
         <form
@@ -119,6 +118,15 @@ export function LoginForm() {
             )}
           </Button>
         </form>
+        <p className="mt-4 text-center text-sm text-muted-foreground">
+          Not an officer?{" "}
+          <Link
+            to="/track"
+            className="font-medium text-primary underline-offset-4 hover:underline"
+          >
+            Track an order
+          </Link>
+        </p>
       </CardContent>
     </Card>
   );

@@ -29,8 +29,10 @@ export function OrderCard({ order, action }: OrderCardProps) {
         </div>
 
         <p className="text-sm">
-          <span className="font-semibold">{order.quantity} ×</span>{" "}
-          {sizeLabel(order.size)} · {patternLabel(order.pattern)}
+          <span className="font-semibold">
+            {order.quantity} {order.quantity === 1 ? "pc" : "pcs"}
+          </span>{" "}
+          · {sizeLabel(order.size)} · {patternLabel(order.pattern)}
         </p>
 
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
