@@ -8,8 +8,8 @@
 
 ## Core loop (3 features — nothing else until these work live)
 - [x] F1 Place Order — `/order`: size (preset chips 2×3 / 3×5 / 4×6 / 5×7 ft), pattern (preset chips), quantity, name, PH mobile number, needed-by date, optional notes (colors go here); no login. **Done when:** submit → confirmation shows order code `HB-XXXX` within 3 s and the "Track" link opens `/track/HB-XXXX`
-- [ ] F2 Coop Board — `/coop` (officer login, Supabase Auth email + password): all orders as cards, sorted by needed-by soonest, filter chips Received / Weaving / Ready / Picked up. **Done when:** the F1 order appears under Received with the right size, pattern and date
-- [ ] F3 Status Update + Buyer Tracking — officer taps the next-step button (Received → Weaving → Ready → Picked up, optional note); buyer opens `/track/HB-XXXX` and sees a 4-step stepper + timeline. **Done when:** judge refreshes the track page after the officer's tap and sees the new step and note, no login
+- [x] F2 Coop Board — `/coop` (officer login, Supabase Auth email + password): all orders as cards, sorted by needed-by soonest, filter chips Received / Weaving / Ready / Picked up. **Done when:** the F1 order appears under Received with the right size, pattern and date
+- [x] F3 Status Update + Buyer Tracking — officer taps the next-step button (Received → Weaving → Ready → Picked up, optional note); buyer opens `/track/HB-XXXX` and sees a 4-step stepper + timeline. **Done when:** judge refreshes the track page after the officer's tap and sees the new step and note, no login
 
 ## Pages / routes
 | Route | Purpose | Main components |

@@ -96,7 +96,7 @@ export function CoopBoard({ renderAction }: CoopBoardProps) {
         <div
           role="group"
           aria-label="Filter by status"
-          className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1"
+          className="flex min-w-0 flex-1 gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {filters.map((f) => (
             <button
